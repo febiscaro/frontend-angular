@@ -1,0 +1,107 @@
+.tickets-container {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.loading, .error-message, .no-tickets {
+  text-align: center;
+  color: #333;
+}
+
+.tickets-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tickets-table th, .tickets-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tickets-table th {
+  background-color: #f1f1f1;
+}
+
+.btn-edit, .btn-delete {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.btn-edit:hover {
+  background-color: #45a049;
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.btn-delete:hover {
+  background-color: #e53935;
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.pagination button:disabled {
+  background-color: #aaa;
+}
+
+.btn-edit, .btn-delete {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  border: none;
+}
+
+.btn-edit:hover {
+  background-color: #45a049;
+}
+
+.btn-delete {
+  background-color: #f44336; /* Vermelho */
+  color: white;
+  border: none;
+}
+
+.btn-delete:hover {
+  background-color: #e53935;
+}

@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth';
 
@@ -9,30 +9,26 @@ import { AuthService } from '../../core/auth';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
+  styleUrls: ['./login.scss']
 })
 export class LoginComponent {
-  private auth = inject(AuthService);
-  private router = inject(Router);
-
-  cpf = '';
-  password = '';
   loading = false;
   error = '';
+  // <<<<<< IMPORTANTe: existe loginData.cpf e loginData.senha
+  loginData = { cpf: '', senha: '' };
 
-  submit() {
-    if (!this.cpf || !this.password) return;
-    this.loading = true;
+  constructor(private auth: AuthService, private router: Router) {}
+
+  async submit() {
     this.error = '';
-    this.auth.login(this.cpf, this.password).subscribe({
-      next: () => {
-        this.loading = false;
-        this.router.navigate(['/tickets']);
-      },
-      error: (err) => {
-        this.loading = false;
-        this.error = err?.error?.detail || 'CPF ou senha inválidos';
-      }
-    });
+    this.loading = true;
+    try {
+      await this.auth.login(this.loginData.cpf, this.loginData.senha);
+      this.router.navigate(['/tickets']);
+    } catch (e: any) {
+      this.error = 'Falha no login. Confira CPF e senha.';
+    } finally {
+      this.loading = false;
+    }
   }
 }

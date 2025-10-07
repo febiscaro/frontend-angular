@@ -1,34 +1,39 @@
-<div style="max-width:960px;margin:40px auto;">
-  <h1>Chamados</h1>
+<div class="tickets-container">
+  <h1 class="title">Chamados</h1>
 
-  <div *ngIf="loading">Carregando...</div>
-  <div *ngIf="error" style="color:#c00">{{ error }}</div>
-  <div *ngIf="!loading && !data.length">Nenhum chamado.</div>
+  <div *ngIf="loading" class="loading">Carregando...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <div *ngIf="!loading && !data.length" class="no-tickets">Nenhum chamado.</div>
 
-  <table *ngIf="!loading && data.length" style="width:100%;border-collapse:collapse;">
+  <table *ngIf="!loading && data.length" class="tickets-table">
     <thead>
       <tr>
-        <th style="text-align:left;border-bottom:1px solid #ddd;padding:8px;">#ID</th>
-        <th style="text-align:left;border-bottom:1px solid #ddd;padding:8px;">Status</th>
-        <th style="text-align:left;border-bottom:1px solid #ddd;padding:8px;">Tipo</th>
-        <th style="text-align:left;border-bottom:1px solid #ddd;padding:8px;">Solicitante</th>
-        <th style="text-align:left;border-bottom:1px solid #ddd;padding:8px;">Criado em</th>
+        <th>#ID</th>
+        <th>Status</th>
+        <th>Tipo</th>
+        <th>Solicitante</th>
+        <th>Criado em</th>
+        <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let c of data">
-        <td style="border-bottom:1px solid #f0f0f0;padding:8px;">{{ c.id }}</td>
-        <td style="border-bottom:1px solid #f0f0f0;padding:8px;">{{ c.status }}</td>
-        <td style="border-bottom:1px solid #f0f0f0;padding:8px;">{{ c.tipo }}</td>
-        <td style="border-bottom:1px solid #f0f0f0;padding:8px;">{{ c.solicitante }}</td>
-        <td style="border-bottom:1px solid #f0f0f0;padding:8px;">{{ c.criado_em | date:'short' }}</td>
+        <td>{{ c.id }}</td>
+        <td>{{ c.status }}</td>
+        <td>{{ c.tipo }}</td>
+        <td>{{ c.solicitante }}</td>
+        <td>{{ c.criado_em | date:'short' }}</td>
+        <td>
+          <button class="btn-edit" (click)="editChamado(c.id)">Editar</button>
+          <button class="btn-delete" (click)="deleteChamado(c.id)">Excluir</button>
+        </td>
       </tr>
     </tbody>
   </table>
 
-  <div *ngIf="count > data.length" style="margin-top:16px;">
+  <div *ngIf="count > data.length" class="pagination">
     <button (click)="load(page-1)" [disabled]="page<=1">← Anterior</button>
-    <span style="margin:0 8px;">Página {{ page }}</span>
+    <span>Página {{ page }}</span>
     <button (click)="load(page+1)" [disabled]="data.length===0">Próxima →</button>
   </div>
 </div>

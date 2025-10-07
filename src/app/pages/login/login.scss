@@ -1,0 +1,94 @@
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #777;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-submit:disabled {
+  background-color: #aaa;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Definindo o fundo da página */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;  // Ajusta a altura para ocupar toda a tela
+  background-color: #f4f4f4;  // Fundo cinza claro
+}
+
+/* Estilizando o formulário de login */
+form {
+  background-color: #fff;  // Fundo branco para o formulário
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;  // Largura máxima do formulário
+}
+
+/* Ajustando o botão para ficar alinhado corretamente */
+button {
+  display: block;
+  width: 100%;  // Faz o botão ocupar toda a largura disponível
+  padding: 0.75rem;
+  background-color: #007bff;  // Cor do botão
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;  // Cor do botão quando o cursor passar por cima
+}

@@ -1,15 +1,33 @@
-<div style="max-width:420px;margin:80px auto;">
-  <h1>Enprodes • Login</h1>
+<h2 class="title">Enprodes • Login</h2>
 
-  <form (ngSubmit)="submit()">
-    <label style="display:block;margin-top:12px;">CPF</label>
-    <input [(ngModel)]="cpf" name="cpf" required style="width:100%;padding:8px;">
+<form (ngSubmit)="submit()" #loginForm="ngForm" class="login-form">
+  <div class="form-group">
+    <label for="cpf">CPF</label>
+    <input
+      type="text"
+      id="cpf"
+      name="cpf"
+      class="form-control"
+      placeholder="Digite seu CPF"
+      [(ngModel)]="loginData.cpf"
+      required />
+  </div>
 
-    <label style="display:block;margin-top:12px;">Senha</label>
-    <input type="password" [(ngModel)]="password" name="password" required style="width:100%;padding:8px;">
+  <div class="form-group">
+    <label for="senha">Senha</label>
+    <input
+      type="password"
+      id="senha"
+      name="senha"
+      class="form-control"
+      placeholder="Digite sua senha"
+      [(ngModel)]="loginData.senha"
+      required />
+  </div>
 
-    <button [disabled]="loading" style="margin-top:16px;padding:8px 12px;">Entrar</button>
+  <button type="submit" class="btn" [disabled]="loading || !loginForm.valid">
+    {{ loading ? 'Entrando...' : 'Entrar' }}
+  </button>
 
-    <div *ngIf="error" style="color:#c00;margin-top:8px;">{{ error }}</div>
-  </form>
-</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+</form>
