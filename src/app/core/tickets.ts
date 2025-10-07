@@ -1,30 +1,50 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-export interface Chamado {
+export interface Ticket {
   id: number;
   status: string;
-  tratativa_adm: string;
-  criado_em: string;
-  atualizado_em: string;
-  suspenso_em: string | null;
-  atendente_nome: string;
-  anexo_adm: string | null;
-  solicitante: number;
-  tipo: number;
+  tipo?: number | string;
+  tipo_label?: string;
+  tipo_nome?: string;
+  solicitante?: string | number;
+  created_at?: string;
+}
+
+export interface Page<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }
 
 @Injectable({ providedIn: 'root' })
 export class TicketsService {
-  private http = inject(HttpClient);
-  private base = environment.apiUrl;
+  constructor(private http: HttpClient) {}
 
-  list(page = 1) {
-    const params = new HttpParams().set('page', page);
-    return this.http.get<{ count: number; next: string | null; previous: string | null; results: Chamado[] }>(
-      `${this.base}/tickets/`,
-      { params }
-    );
+  private normalizePage<T>(resp: any): Page<T> {
+    if (Array.isArray(resp)) {
+      // API sem paginação
+      return { count: resp.length, next: null, previous: null, results: resp as T[] };
+    }
+    if (resp && Array.isArray(resp.results)) {
+      // DRF paginado
+      return resp as Page<T>;
+    }
+    // objeto único ou formato inesperado
+    const arr = resp ? [resp as T] : [];
+    return { count: arr.length, next: null, previous: null, results: arr };
+  }
+
+  list(page = 1, pageSize = 6): Observable<Page<Ticket>> {
+    const url = `${environment.apiUrl}/tickets/?page=${page}&page_size=${pageSize}`;
+    return this.http.get<any>(url).pipe(map(r => this.normalizePage<Ticket>(r)));
+  }
+
+  get(id: number) {
+    return this.http.get<Ticket>(`${environment.apiUrl}/tickets/${id}/`);
   }
 }

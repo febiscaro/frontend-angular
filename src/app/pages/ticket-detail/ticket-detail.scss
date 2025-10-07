@@ -1,0 +1,6 @@
+.detail { display: flex; flex-direction: column; gap: 16px; }
+.header { display:flex; align-items:center; justify-content:space-between; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card { background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding:16px; }
+.error { color: var(--danger); font-weight: 700; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }

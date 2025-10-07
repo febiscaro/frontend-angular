@@ -1,107 +1,61 @@
-.tickets-container {
-  max-width: 960px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #fafafa;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.title { margin: 6px 0 0; font-size: 28px; }
+.section-title { margin: 12px 0 4px; font-size: 26px; }
 
-.title {
-  text-align: center;
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
+.chips { display:flex; gap:10px; flex-wrap:wrap; }
+.chip {
+  display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px;
+  font-size:12px; font-weight:800; border:1px solid transparent;
 }
+.chip-blue     { background:#e0ecff; color:#1e3a8a; border-color:#c7d2fe; }
+.chip-amber    { background:#fef3c7; color:#7c2d12; border-color:#fde68a; }
+.chip-burgundy { background:#f5d0d6; color:#7f1d1d; border-color:#fecdd3; }
+.chip-green    { background:#d1fae5; color:#065f46; border-color:#a7f3d0; }
+.chip-slate    { background:#e5e7eb; color:#111827; border-color:#d1d5db; }
 
-.loading, .error-message, .no-tickets {
-  text-align: center;
-  color: #333;
+.panel {
+  border-radius: 14px; overflow: hidden; border:1px solid var(--border); box-shadow: var(--shadow);
+  background: var(--surface); margin-top: 4px;
 }
+.panel-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 10px; font-weight:700; border-bottom:1px solid var(--border);
+}
+.panel-blue   .panel-header { background:#3b82f6; color:white; }
+.panel-amber  .panel-header { background:#f0d266; color:#3f3f3f; }
+.panel-burgundy .panel-header{ background:#7f1d1d; color:white; }
+.panel-green  .panel-header { background:#10b981; color:white; }
+.panel-slate  .panel-header { background:#374151; color:white; }
 
-.tickets-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+.controls { display:flex; align-items:center; gap:10px; }
+.controls label { font-size:12px; opacity:.9; }
+.controls select { height:32px; border-radius:8px; border:1px solid var(--border); padding:0 8px; }
 
-.tickets-table th, .tickets-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.toggle {
+  display:flex; align-items:center; gap:8px; border:0; background:transparent; color:inherit;
+  font: inherit; cursor: pointer;
 }
+.toggle span { display:inline-block; transform: rotate(90deg); transition: transform .2s ease; }
+.toggle span.rot { transform: rotate(270deg); }
 
-.tickets-table th {
-  background-color: #f1f1f1;
-}
+.panel-body { padding: 8px 10px; }
+.table { width:100%; border-collapse: collapse; }
+.table th, .table td { padding: 10px 12px; border-bottom:1px solid var(--border); }
+.table th { text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.06em; opacity:.9; }
 
-.btn-edit, .btn-delete {
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
+.badge {
+  display:inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+  border:1px solid transparent;
 }
+.badge-blue     { background:#dbeafe; color:#1e40af; border-color:#bfdbfe; }
+.badge-amber    { background:#fef3c7; color:#7c2d12; border-color:#fde68a; }
+.badge-burgundy { background:#fee2e2; color:#7f1d1d; border-color:#fecaca; }
+.badge-green    { background:#dcfce7; color:#166534; border-color:#bbf7d0; }
+.badge-slate    { background:#e5e7eb; color:#111827; border-color:#d1d5db; }
 
-.btn-edit {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-}
+.btn.btn-small { height:32px; padding:0 12px; border-radius:8px; }
+.btn.btn-light { background:#e5e7eb; color:#111827; }
 
-.btn-edit:hover {
-  background-color: #45a049;
-}
-
-.btn-delete {
-  background-color: #f44336;
-  color: white;
-  border: none;
-}
-
-.btn-delete:hover {
-  background-color: #e53935;
-}
-
-.pagination {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.pagination button {
-  padding: 8px 12px;
-  background-color: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin: 0 10px;
-}
-
-.pagination button:disabled {
-  background-color: #aaa;
-}
-
-.btn-edit, .btn-delete {
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-edit {
-  background-color: #4CAF50; /* Verde */
-  color: white;
-  border: none;
-}
-
-.btn-edit:hover {
-  background-color: #45a049;
-}
-
-.btn-delete {
-  background-color: #f44336; /* Vermelho */
-  color: white;
-  border: none;
-}
-
-.btn-delete:hover {
-  background-color: #e53935;
-}
+.pager { display:flex; gap:10px; align-items:center; justify-content:center; margin-top: 10px; }
+.error { color: var(--danger); font-weight: 700; }
+.muted { color: var(--muted); }

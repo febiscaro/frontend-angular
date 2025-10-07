@@ -1,35 +1,23 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
-  private base = environment.apiUrl;
+  private tokenKey = 'access';
 
-  login(cpf: string, password: string) {
-    return this.http.post<{ access: string; refresh: string }>(
-      `${this.base}/auth/token/`,
-      { cpf, password }
-    ).pipe(
-      tap(tokens => {
-        localStorage.setItem('access', tokens.access);
-        localStorage.setItem('refresh', tokens.refresh);
-      })
-    );
+  constructor(private http: HttpClient) {}
+
+  async login(cpf: string, password: string): Promise<void> {
+    const url = `${environment.apiUrl}/auth/token/`;
+    const resp = await this.http.post<{ access: string }>(url, { cpf, password }).toPromise();
+    if (!resp?.access) throw new Error('sem token');
+    localStorage.setItem(this.tokenKey, resp.access);
   }
 
-  get token() {
-    return localStorage.getItem('access');
-  }
+  logout() { localStorage.removeItem(this.tokenKey); }
 
-  logout() {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
-  }
+  get token(): string | null { return localStorage.getItem(this.tokenKey); }
 
-  isLoggedIn() {
-    return !!this.token;
-  }
+  isLoggedIn(): boolean { return !!this.token; }
 }

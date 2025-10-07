@@ -1,39 +1,189 @@
-<div class="tickets-container">
-  <h1 class="title">Chamados</h1>
+<section class="stack">
+  <h1 class="title">Meus Chamados</h1>
 
-  <div *ngIf="loading" class="loading">Carregando...</div>
-  <div *ngIf="error" class="error-message">{{ error }}</div>
-  <div *ngIf="!loading && !data.length" class="no-tickets">Nenhum chamado.</div>
-
-  <table *ngIf="!loading && data.length" class="tickets-table">
-    <thead>
-      <tr>
-        <th>#ID</th>
-        <th>Status</th>
-        <th>Tipo</th>
-        <th>Solicitante</th>
-        <th>Criado em</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let c of data">
-        <td>{{ c.id }}</td>
-        <td>{{ c.status }}</td>
-        <td>{{ c.tipo }}</td>
-        <td>{{ c.solicitante }}</td>
-        <td>{{ c.criado_em | date:'short' }}</td>
-        <td>
-          <button class="btn-edit" (click)="editChamado(c.id)">Editar</button>
-          <button class="btn-delete" (click)="deleteChamado(c.id)">Excluir</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="count > data.length" class="pagination">
-    <button (click)="load(page-1)" [disabled]="page<=1">← Anterior</button>
-    <span>Página {{ page }}</span>
-    <button (click)="load(page+1)" [disabled]="data.length===0">Próxima →</button>
+  <!-- Chips de status -->
+  <div class="chips">
+    <span class="chip chip-blue">Abertos {{ countAbertos }}</span>
+    <span class="chip chip-amber">Em andamento {{ countAndamento }}</span>
+    <span class="chip chip-burgundy">Suspensos {{ countSuspensos }}</span>
+    <span class="chip chip-green">Concluídos {{ countConcluidos }}</span>
+    <span class="chip chip-slate">Cancelados {{ countCancelados }}</span>
   </div>
+
+  <!-- Chamados Ativos -->
+  <h2 class="section-title">Chamados Ativos</h2>
+
+  <!-- Bloco Abertos -->
+  <div class="panel panel-blue">
+    <div class="panel-header">
+      <button class="toggle" (click)="open.abertos = !open.abertos">
+        <span [ngClass]="{rot: open.abertos}">›</span> Abertos
+      </button>
+      <div class="controls">
+        <label>Por página</label>
+        <select [value]="pageSize" (change)="setPageSize(+$any($event.target).value)">
+          <option [value]="2">2</option>
+          <option [value]="6">6</option>
+          <option [value]="12">12</option>
+        </select>
+        <button class="btn btn-small">Ver mais</button>
+      </div>
+    </div>
+
+    <div class="panel-body" *ngIf="open.abertos">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th><th>Tipo</th><th>Status</th><th>Tratativa</th><th>Criado em</th><th>Anexos</th><th>Gerenciar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of groups.abertos">
+            <td>{{ t.id }}</td>
+            <td>{{ t.tipo || '—' }}</td>
+            <td><span class="badge badge-blue">Aberto</span></td>
+            <td>—</td>
+            <td>{{ t.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>—</td>
+            <td><button class="btn btn-light" [routerLink]="['/tickets', t.id]">Ver</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bloco Em andamento -->
+  <div class="panel panel-amber">
+    <div class="panel-header">
+      <button class="toggle" (click)="open.andamento = !open.andamento">
+        <span [ngClass]="{rot: open.andamento}">›</span> Em andamento
+      </button>
+      <div class="controls">
+        <label>Por página</label>
+        <select [value]="pageSize" (change)="setPageSize(+$any($event.target).value)">
+          <option [value]="2">2</option>
+          <option [value]="6">6</option>
+          <option [value]="12">12</option>
+        </select>
+        <button class="btn btn-small">Ver mais</button>
+      </div>
+    </div>
+
+    <div class="panel-body" *ngIf="open.andamento">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th><th>Tipo</th><th>Status</th><th>Tratativa</th><th>Criado em</th><th>Anexos</th><th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of groups.andamento">
+            <td>{{ t.id }}</td>
+            <td>{{ t.tipo || '—' }}</td>
+            <td><span class="badge badge-amber">Em andamento</span></td>
+            <td>—</td>
+            <td>{{ t.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>—</td>
+            <td><button class="btn btn-light" [routerLink]="['/tickets', t.id]">Ver</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Histórico -->
+  <h2 class="section-title">Histórico</h2>
+
+  <div class="panel panel-burgundy">
+    <div class="panel-header">
+      <button class="toggle" (click)="open.suspensos = !open.suspensos">
+        <span [ngClass]="{rot: open.suspensos}">›</span> Suspensos
+      </button>
+      <div class="controls">
+        <label>Por página</label>
+        <select [value]="pageSize" (change)="setPageSize(+$any($event.target).value)">
+          <option [value]="2">2</option>
+          <option [value]="6">6</option>
+          <option [value]="12">12</option>
+        </select>
+        <button class="btn btn-small">Ver mais</button>
+      </div>
+    </div>
+    <div class="panel-body" *ngIf="open.suspensos">
+      <table class="table"><tbody>
+        <tr *ngFor="let t of groups.suspensos">
+          <td style="width:60px;">{{ t.id }}</td>
+          <td>{{ t.tipo || '—' }}</td>
+          <td><span class="badge badge-burgundy">Suspenso</span></td>
+          <td>{{ t.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td><button class="btn btn-light" [routerLink]="['/tickets', t.id]">Ver</button></td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="panel panel-green">
+    <div class="panel-header">
+      <button class="toggle" (click)="open.concluidos = !open.concluidos">
+        <span [ngClass]="{rot: open.concluidos}">›</span> Concluídos
+      </button>
+      <div class="controls">
+        <label>Por página</label>
+        <select [value]="pageSize" (change)="setPageSize(+$any($event.target).value)">
+          <option [value]="2">2</option>
+          <option [value]="6">6</option>
+          <option [value]="12">12</option>
+        </select>
+        <button class="btn btn-small">Ver mais</button>
+      </div>
+    </div>
+    <div class="panel-body" *ngIf="open.concluidos">
+      <table class="table"><tbody>
+        <tr *ngFor="let t of groups.concluidos">
+          <td style="width:60px;">{{ t.id }}</td>
+          <td>{{ t.tipo || '—' }}</td>
+          <td><span class="badge badge-green">Concluído</span></td>
+          <td>{{ t.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td><button class="btn btn-light" [routerLink]="['/tickets', t.id]">Ver</button></td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="panel panel-slate">
+    <div class="panel-header">
+      <button class="toggle" (click)="open.cancelados = !open.cancelados">
+        <span [ngClass]="{rot: open.cancelados}">›</span> Cancelados
+      </button>
+      <div class="controls">
+        <label>Por página</label>
+        <select [value]="pageSize" (change)="setPageSize(+$any($event.target).value)">
+          <option [value]="2">2</option>
+          <option [value]="6">6</option>
+          <option [value]="12">12</option>
+        </select>
+        <button class="btn btn-small">Ver mais</button>
+      </div>
+    </div>
+    <div class="panel-body" *ngIf="open.cancelados">
+      <table class="table"><tbody>
+        <tr *ngFor="let t of groups.cancelados">
+          <td style="width:60px;">{{ t.id }}</td>
+          <td>{{ t.tipo || '—' }}</td>
+          <td><span class="badge badge-slate">Cancelado</span></td>
+          <td>{{ t.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td><button class="btn btn-light" [routerLink]="['/tickets', t.id]">Ver</button></td>
+        </tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- Rodapé de paginação simples -->
+  <div class="pager">
+  <button class="btn btn-light" (click)="load(1)" [disabled]="!page || !page.previous">‹‹</button>
+  <button class="btn btn-light" (click)="load(pageIndex - 1)" [disabled]="!page || !page.previous">‹</button>
+  <span>Página {{ pageIndex }}</span>
+  <button class="btn btn-light" (click)="load(pageIndex + 1)" [disabled]="!page || !page.next">›</button>
 </div>
+
+</section>
